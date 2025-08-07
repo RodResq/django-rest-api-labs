@@ -1,5 +1,5 @@
 [project]
-name = "django-rest-api-labs"
+name = "django-rest-api-tutorial"
 version = "0.1.0"
 description = ""
 authors = [
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "django_rest_api_labs", from = "src"}]
+packages = [{include = "django_rest_api_tutorial", from = "src"}]
 
 
 [build-system]
