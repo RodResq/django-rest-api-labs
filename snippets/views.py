@@ -7,12 +7,14 @@ from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer, UserSerializer
 from rest_framework import generics
 from rest_framework import permissions
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.reverse import reverse
 from rest_framework import renderers
 from snippets.permissions import IsOwnerOrReadOnly
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -38,3 +40,27 @@ class SnippetViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+        
+        
+class ExampleView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        content = {
+            'user': str(request.user),
+            'auth': str(request.auth)
+        }
+        return Response(content)
+    
+    
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])    
+def exemple_view(request, format=None):
+    content = {
+        'user': str(request.user),
+        'auth': str(request.auth)
+    }
+    return Response(content)
+    
